@@ -28,17 +28,28 @@ def callback():
         with open('id.txt', 'r') as f:
             user_id = f.read()
         f.close()
-        print(user_id)
-        try:
-            line_bot_api.broadcast(TextSendMessage(text='This is a broadcast message'))
+        sensor_signal = request.args.get(key='SENSOR')
+        predict_signal = request.args.get(key="RESULT")
+        print(predict_signal)
+        if (sensor_signal=="ON"):
+            # line_bot_api.broadcast(TextSendMessage(text='SENSOR IS ON SIGNAL'))
+            # line_bot_api.broadcast(TextSendMessage(text='This is a broadcast message'))
             line_bot_api.push_message(user_id, TextSendMessage(text='Message from Desktop send to specific id'))
-            line_bot_api.push_message(user_id,ImageSendMessage(original_content_url="https://i.imgur.com/PQ6Y1vv.png#",
-                                                               preview_image_url="https://i.imgur.com/PQ6Y1vv.png#"))
-        except LineBotApiError as e:
-            # error handle
-            raise e
+
+        if (predict_signal == "0 khduh"):
+            line_bot_api.push_message(user_id, TextSendMessage(text='Welcome home'))
+        elif (predict_signal == "1 mask"):
+            line_bot_api.push_message(user_id, TextSendMessage(text='Warning'))
+            line_bot_api.push_message(user_id,
+                                      ImageSendMessage(original_content_url="https://80e54e6189c5.ngrok.io/photo_page",
+                                                       preview_image_url="https://80e54e6189c5.ngrok.io/photo_page"))
+        else:
+            line_bot_api.push_message(user_id, TextSendMessage(text='No predicting'))
+            # line_bot_api.push_message(user_id,ImageSendMessage(original_content_url="https://i.imgur.com/PQ6Y1vv.png#",
+            #                                                    preview_image_url="https://i.imgur.com/PQ6Y1vv.png#"))
+            pass
+
         return "OK"
-        pass
     elif request.method == 'POST':
         signature = request.headers['X-Line-Signature']
 
@@ -74,7 +85,7 @@ def handle_message(event):
         }
         print(data.keys())
         # "message from desktop"
-        r = requests.get('https://aaf0b0213f31.ngrok.io', params=data)
+        r = requests.get('https://80e54e6189c5.ngrok.io', params=data)
         r.close()
     elif (event.message.text == "hi"):
         pass
@@ -84,7 +95,7 @@ def handle_message(event):
         }
         # print(data.keys())
         # "message from desktop"
-        r = requests.get('https://aaf0b0213f31.ngrok.io/hi', params=data)
+        r = requests.get('https://80e54e6189c5.ngrok.io', params=data)
         r.close()
     else:
         pass
