@@ -40,8 +40,8 @@ def callback():
         elif (predict_signal == "1 mask"):
             line_bot_api.push_message(user_id, TextSendMessage(text='Warning'))
             line_bot_api.push_message(user_id,
-                                      ImageSendMessage(original_content_url="https://80e54e6189c5.ngrok.io/photo_page",
-                                                       preview_image_url="https://80e54e6189c5.ngrok.io/photo_page"))
+                                      ImageSendMessage(original_content_url="https://c8fae789e773.ngrok.io/photo_page#",
+                                                       preview_image_url="https://c8fae789e773.ngrok.io/photo_page#"))
         else:
             line_bot_api.push_message(user_id, TextSendMessage(text='No predicting'))
             pass
@@ -83,7 +83,7 @@ def handle_message(event):
         }
         print(data.keys())
         # "message from desktop"
-        r = requests.get('https://80e54e6189c5.ngrok.io', params=data)
+        r = requests.get('https://c8fae789e773.ngrok.io', params=data)
         r.close()
     else:
         pass
