@@ -27,6 +27,7 @@ def callback():
         with open('id.txt', 'r') as f:
             user_id = f.read()
         f.close()
+
         sensor_signal = request.args.get(key='SENSOR')
         predict_signal = request.args.get(key="RESULT")##此處程式碼為辨識影像結果
         print(predict_signal)
