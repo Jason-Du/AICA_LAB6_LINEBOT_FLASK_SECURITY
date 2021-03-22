@@ -20,7 +20,6 @@ handler = WebhookHandler(config.get('line-bot', 'channel_secret'))
 
 
 # 接收 LINE 的資訊
-
 @app.route("/callback",methods=['POST',"GET"])
 def callback():
     if request.method == 'GET':
@@ -29,13 +28,13 @@ def callback():
             user_id = f.read()
         f.close()
         sensor_signal = request.args.get(key='SENSOR')
-        predict_signal = request.args.get(key="RESULT")
+        predict_signal = request.args.get(key="RESULT")##此處程式碼為辨識影像結果
         print(predict_signal)
         if (sensor_signal=="ON"):
-            # line_bot_api.broadcast(TextSendMessage(text='SENSOR IS ON SIGNAL'))
-            # line_bot_api.broadcast(TextSendMessage(text='This is a broadcast message'))
-            line_bot_api.push_message(user_id, TextSendMessage(text='Message from Desktop send to specific id'))
-
+            # line_bot_api.broadcast(TextSendMessage(text='SENSOR IS ON SIGNAL'))#廣播通知全部人
+            # line_bot_api.broadcast(TextSendMessage(text='This is a broadcast message'))#廣播通知全部人
+            line_bot_api.push_message(user_id, TextSendMessage(text='Message from Desktop send to specific id'))#向特定人傳送訊息
+################################# 此處程式碼為辨識影像結果
         if (predict_signal == "0 khduh"):
             line_bot_api.push_message(user_id, TextSendMessage(text='Welcome home'))
         elif (predict_signal == "1 mask"):
@@ -45,9 +44,8 @@ def callback():
                                                        preview_image_url="https://80e54e6189c5.ngrok.io/photo_page"))
         else:
             line_bot_api.push_message(user_id, TextSendMessage(text='No predicting'))
-            # line_bot_api.push_message(user_id,ImageSendMessage(original_content_url="https://i.imgur.com/PQ6Y1vv.png#",
-            #                                                    preview_image_url="https://i.imgur.com/PQ6Y1vv.png#"))
             pass
+#################################此處程式碼為辨識影像結果
 
         return "OK"
     elif request.method == 'POST':
@@ -87,34 +85,7 @@ def handle_message(event):
         # "message from desktop"
         r = requests.get('https://80e54e6189c5.ngrok.io', params=data)
         r.close()
-    elif (event.message.text == "hi"):
-        pass
-        data = {
-            "name": "Jason",
-            "photo": "OFF"
-        }
-        # print(data.keys())
-        # "message from desktop"
-        r = requests.get('https://80e54e6189c5.ngrok.io', params=data)
-        r.close()
     else:
         pass
-
-# @handler.add(MessageEvent, message=TextMessage)
-# def pretty_echo(event):
-#     # if event.source.user_id != "Udeadbeefdeadbeefdeadbeefdeadbeef":
-#
-#     # Phoebe 愛唱歌
-#     pretty_note = '♫♪♬'
-#     pretty_text = ''
-#
-#     for i in event.message.text:
-#         pretty_text += i
-#         pretty_text += random.choice(pretty_note)
-#
-#     line_bot_api.reply_message(
-#         event.reply_token,
-#         TextSendMessage(text=pretty_text)
-#     )
 if __name__ == "__main__":
     app.run(debug=True, host='127.0.0.1', port=5000)
